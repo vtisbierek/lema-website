@@ -2,8 +2,6 @@ import styles from "../../styles/posts.module.scss";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-import forest from "../../../public/images/forest.jpg";
-import moinho from "../../../public/images/moinho.jpg";
 import {FiChevronLeft, FiChevronsLeft, FiChevronRight, FiChevronsRight} from "react-icons/fi";
 import { GetStaticProps } from 'next';
 import {client} from "../../services/prismic";
