@@ -2,6 +2,8 @@ import Head from 'next/head';
 import styles from "../styles/homePage.module.scss";
 import Image from 'next/image';
 import footerImg from "../../public/images/footerImage.jpeg";
+import { GetStaticProps } from 'next';
+import {client} from "../services/prismic";
 
 export default function Home() {
   return (
@@ -55,4 +57,17 @@ export default function Home() {
       </main>
     </>
   )
+}
+
+export const getStaticProps: GetStaticProps = async () => {
+  const prismic = await client.getSingle("home");
+
+  console.log(prismic);
+  
+
+  return {
+    props: {
+
+    }
+  }
 }
