@@ -4,6 +4,7 @@ import Image from 'next/image';
 import footerImg from "../../public/images/footerImage.jpeg";
 import { GetStaticProps } from 'next';
 import {client} from "../services/prismic";
+import * as prismicH from '@prismicio/helpers';
 
 export default function Home() {
   return (
@@ -62,9 +63,23 @@ export default function Home() {
 export const getStaticProps: GetStaticProps = async () => {
   const prismic = await client.getSingle("home");
 
-  console.log(prismic);
+  const {
+    title, sub_title, link_action, image_title, title_section_1, sub_title_section_1, image_section_1, title_section_2, sub_title_section_2, image_section_2
+  } = prismic.data;
   
-
+  const content = {
+    title: title,
+    subTitle: prismicH.asText(sub_title),
+    linkAction: prismicH.asLink(link_action),
+    titleImage: prismicH.asImageSrc(image_title),
+    titleSection1: title_section_1,
+    subtitleSection1: prismicH.asText(sub_title_section_1),
+    imageSection1: prismicH.asImageSrc(image_section_1),
+    titleSection2: title_section_2,
+    subtitleSection2: prismicH.asText(sub_title_section_2),
+    imageSection2: prismicH.asImageSrc(image_section_2),
+  }
+   
   return {
     props: {
 
