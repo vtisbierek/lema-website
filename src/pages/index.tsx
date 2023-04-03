@@ -6,7 +6,27 @@ import { GetStaticProps } from 'next';
 import {client} from "../services/prismic";
 import * as prismicH from '@prismicio/helpers';
 
-export default function Home() {
+type Content = {
+  title: string;
+  subTitle: string;
+  linkAction: string;
+  titleImage: string;
+  titleSection1: string;
+  subtitleSection1: string;
+  imageSection1: string;
+  titleSection2: string;
+  subtitleSection2: string;
+  imageSection2: string;
+}
+
+interface ContentProps{
+  content: Content;
+}
+
+export default function Home({content}: ContentProps) {
+  console.log(content);
+  
+
   return (
     <>
       <Head>
@@ -15,35 +35,32 @@ export default function Home() {
       <main className={styles.container}>
         <div className={styles.containerDiv}>
           <section className={styles.containerSection}>
-            <h1>Lorem ipsum dolor sit amet</h1>
-            <span>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            </span>
-            <a>
-              <button>Lorem</button>
+            <h1>{content.title}</h1>
+            <span>{content.subTitle}</span>
+            <a href={content.linkAction} target="_blank">
+              <button>COMEÇAR</button>
             </a>
           </section>
-          <img src="/images/banner.png" alt="home image 1" />
+          <img src={content.titleImage} alt="home image 1" />
         </div>
 
         <hr className={styles.divisor} />
 
         <div className={styles.secondSection}>
           <section>
-            <h2>Duis aute irure dolor in reprehenderit in voluptate velit</h2>
-            <span>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
+            <h2>{content.titleSection1}</h2>
+            <span>{content.subtitleSection1}</span>
           </section>
-          <img src="/images/banner2.jpeg" alt="home image 2" />
+          <img src={content.imageSection1} alt="home image 2" />
         </div>
 
         <hr className={styles.divisor} />
 
         <div className={styles.thirdSection}>
-          <img src="/images/banner3.jpeg" alt="home image 3" />
+          <img src={content.imageSection2} alt="home image 3" />
           <section>
-            <h2>Duis aute irure dolor in reprehenderit in voluptate velit</h2>
-            <span>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
+            <h2>{content.titleSection2}</h2>
+            <span>{content.subtitleSection2}</span>
           </section>
         </div>
 
@@ -82,7 +99,8 @@ export const getStaticProps: GetStaticProps = async () => {
    
   return {
     props: {
-
-    }
+      content
+    },
+    revalidate: 600, //essa página será gerada novamente a cada 10 minutos
   }
 }
