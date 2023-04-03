@@ -12,7 +12,9 @@
   "dependencies": {
     "@prismicio/client": "^6.7.3",
     "@prismicio/helpers": "^2.3.9",
+    "@prismicio/next": "^1.0.3",
     "@prismicio/react": "^2.5.2",
+    "@prismicio/slice-simulator-react": "^0.2.3",
     "@types/node": "18.15.11",
     "@types/react": "18.0.31",
     "@types/react-dom": "18.0.11",
