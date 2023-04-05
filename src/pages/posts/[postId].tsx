@@ -52,8 +52,6 @@ export const getServerSideProps: GetServerSideProps = async ({query}) => { //que
     try{
         const response = await client.getByUID("post", postId as string);
 
-        console.log(response);
-        
         return {
             props: {
                 post: {

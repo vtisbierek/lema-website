@@ -1,7 +1,7 @@
 import * as prismic from '@prismicio/client';
 
 // Fill in your repository name
-export const repositoryName = "lemaconsultoria";
+export const repositoryName = process.env.PRISMIC_REPOSITORY_NAME as string;
 
 export const client = prismic.createClient(repositoryName, {
   // If your repository is private, add an access token

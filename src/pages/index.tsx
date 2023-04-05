@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import styles from "../styles/homePage.module.scss";
 import Image from 'next/image';
-import footerImg from "../../public/images/footerImage.jpeg";
+import footerImg from "../../public/images/footerImage.png";
 import { GetStaticProps } from 'next';
 import {client} from "../services/prismic";
 import * as prismicH from '@prismicio/helpers';
@@ -23,9 +23,7 @@ interface ContentProps{
   content: Content;
 }
 
-export default function Home({content}: ContentProps) {
-  console.log(content);
-  
+export default function Home({content}: ContentProps) { 
 
   return (
     <>
