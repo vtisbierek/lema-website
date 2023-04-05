@@ -70,6 +70,11 @@ export default function Home({content}: ContentProps) {
             <button>COMEÇAR AGORA</button>
           </a>
         </div>
+
+        <a className={styles.whatsapp} href="https://wa.me/5551996830900" target="_blank">
+          <img className={styles.whatsappIcon} src="./images/whatsapp_icon.png" alt="whatsapp icon"/>
+        </a>
+        
       </main>
     </>
   )
