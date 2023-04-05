@@ -134,6 +134,8 @@ export const getStaticProps: GetStaticProps = async () => {
         pageSize: 2,
     });
 
+    console.log(response);
+
     const posts = response.results.map(item => {
         return {
             postId: item.uid,
