@@ -22,17 +22,53 @@ interface PostsProps{
     totalPages: number;
 }
 
-export default function Posts({posts: postsBlog, page, totalPages}: PostsProps){
+export default function Posts({posts: postsBlog, page, totalPages}: PostsProps){ //renomeei o props posts como postsBlog para poder dar o nome de posts pra minha variável de estado, senão daria problema ter os dois nomes iguais
     const [posts, setPosts] = useState(postsBlog || []);
     const [currentPage, setCurrentPage] = useState(page);
 
-    console.log(page, totalPages);
+    async function getPosts(pageNumber: number){
+        const response = await client.getByType("post", {
+            orderings: {
+                field: 'document.last_publication_date',
+                direction: 'desc',
+            },
+            pageSize: 2,
+            page: pageNumber,
+        });  
+
+        return response;
+    }
+
+    async function navigatePage(pageNumber: number){
+        if (pageNumber < 1 || pageNumber > totalPages) return;
+
+        const response = await getPosts(pageNumber);
+
+        if (response.results.length === 0) return;
+
+        const newPosts = response.results.map(item => {
+            return {
+                postId: item.uid,
+                title: item.data.title as string,
+                image: prismicH.asImageSrc(item.data.cover_image) as string,
+                postContent: prismicH.asText(item.data.post_content),
+                updatedAt: new Date(item.last_publication_date).toLocaleDateString("pt-BR", {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric"
+                })
+            }
+        });
+
+        setCurrentPage(pageNumber);
+        setPosts(newPosts);
+    }
     
 
     return(
         <>
             <Head>
-                <title>LEMA Soluções Empresariais - Blog</title>
+                <title>Blog | LEMA Soluções Empresariais</title>
             </Head>
             <main className={styles.container}>
                 <div className={styles.posts}>
@@ -50,26 +86,33 @@ export default function Posts({posts: postsBlog, page, totalPages}: PostsProps){
                             />
                             <strong>{post.title}</strong>
                             <time>{post.updatedAt}</time>
-                            <p>{post.postContent}</p>
+                            {post.postContent.length < 200 ? (
+                                <p>{post.postContent}</p>
+                            ) : (
+                                //<p>{post.postContent.substring(0, 200)}... <span>Ler Mais</span></p> aqui seria para fazer com contagem de caracteres
+                                <p>{post.postContent.split(".")[0]}... <span>Ler Mais</span></p> //aqui eu tô truncando no primeiro ponto (fim do primeiro parágrafo)
+                            )}
+                            
                         </Link>
                     ))}
-                    
 
                     <div className={styles.buttonNavigate}>
                         <div className={styles.buttonsLeft}>
-                            <button>
+                            <button disabled={currentPage < 2} onClick={() => {navigatePage(1)}}>
                                 <FiChevronsLeft size={25} color="#fff"/>
                             </button>
-                            <button>
+                            <button disabled={currentPage < 2} onClick={() => {navigatePage(currentPage - 1)}}>
                                 <FiChevronLeft size={25} color="#fff"/>
                             </button>
                         </div>
 
+                        <span>{currentPage}</span>
+
                         <div className={styles.buttonsRight}>
-                            <button>
+                            <button disabled={currentPage >= totalPages} onClick={() => {navigatePage(currentPage + 1)}}>
                                 <FiChevronRight size={25} color="#fff"/>
                             </button>
-                            <button>
+                            <button disabled={currentPage >= totalPages} onClick={() => {navigatePage(totalPages)}}>
                                 <FiChevronsRight size={25} color="#fff"/>
                             </button>
                         </div>
@@ -83,7 +126,7 @@ export default function Posts({posts: postsBlog, page, totalPages}: PostsProps){
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-    const prismic = await client.getByType("post", {
+    const response = await client.getByType("post", {
         orderings: {
             field: 'document.last_publication_date',
             direction: 'desc',
@@ -91,7 +134,7 @@ export const getStaticProps: GetStaticProps = async () => {
         pageSize: 2,
     });
 
-    const posts = prismic.results.map(item => {
+    const posts = response.results.map(item => {
         return {
             postId: item.uid,
             title: item.data.title,
@@ -105,15 +148,12 @@ export const getStaticProps: GetStaticProps = async () => {
         }
     });
 
-    //console.log(prismic);
-    
-    
     return {
         props: {
             posts,
-            page: prismic.page,
-            totalPages: prismic.total_pages
+            page: response.page,
+            totalPages: response.total_pages
         },
-        revalidate: 600,
+        revalidate: 60 * 10,
     }
 }

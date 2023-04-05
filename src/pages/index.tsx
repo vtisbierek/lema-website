@@ -78,11 +78,11 @@ export default function Home({content}: ContentProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const prismic = await client.getSingle("home");
+  const response = await client.getSingle("home");
 
   const {
     title, sub_title, link_action, image_title, title_section_1, sub_title_section_1, image_section_1, title_section_2, sub_title_section_2, image_section_2
-  } = prismic.data;
+  } = response.data;
   
   const content = {
     title: title,
@@ -101,6 +101,6 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       content
     },
-    revalidate: 600, //essa página será gerada novamente a cada 10 minutos
+    revalidate: 60 * 10, //essa página será gerada novamente a cada 10 minutos
   }
 }

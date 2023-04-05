@@ -43,6 +43,13 @@
     p{
         margin-top: 0.5rem;
         line-height: 1.65rem;
+
+        span{
+            color: var(--blue-900);
+            font-weight: 500;
+            display: inline-block;
+            margin-left: 10px;
+        }
     }
 }
 
@@ -51,7 +58,7 @@
 }
 
 .buttonNavigate{
-    margin-top: 2rem;
+    margin-top: 2.5rem;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -60,6 +67,12 @@
     div{
         display: flex;
         flex-direction: row;
+    }
+
+    span{
+        color: var(--blue-900);
+        font-size: 0.85rem;
+        font-weight: 700;
     }
 
     button{
@@ -72,6 +85,10 @@
 
         svg{
             padding: 0 3px;
+        }
+
+        &:disabled{
+            opacity: 0.5;
         }
     }
 }
