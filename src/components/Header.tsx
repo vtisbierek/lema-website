@@ -1,6 +1,6 @@
 import styles from "../styles/header.module.scss";
 import Image from "next/image";
-import logo from "../../public/images/logo.png";
+import logo from "../../public/images/lema_logo_pínk_sq.jpg";
 import ActiveLink from "./ActiveLink";
 import Link from "next/link";
 
